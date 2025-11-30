@@ -1,0 +1,76 @@
+### Java ###
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.log
+
+### Maven ###
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+### Gradle (if present) ###
+.gradle/
+build/
+!.gradle/wrapper/gradle-wrapper.jar
+
+### Spring Boot ###
+application.properties
+application.yml
+application-local.properties
+application-*.yml
+application-*.properties
+
+### Logs ###
+logs/
+*.log
+*.out
+
+### IDEs ###
+# IntelliJ IDEA
+.idea/
+*.ipr
+*.iws
+*.iml
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# VS Code
+.vscode/
+
+### Operating System ###
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### Docker ###
+docker-data/
+docker-compose.override.yml
+
+### Node (if frontend exists inside microservice) ###
+node_modules/
+dist/
+build/
+
+### Temporary Files ###
+*.tmp
+*.temp
+*.swp
+
+### Sensitive files ###
+.env
+.env.local
+.secrets/
+certs/
