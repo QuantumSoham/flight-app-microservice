@@ -1,5 +1,6 @@
 package com.flightapp.booking.client;
 
+import com.flightapp.booking.dto.response.ApiResponse;
 import com.flightapp.booking.dto.response.FlightDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public interface FlightServiceClient {
 
     @GetMapping("/api/v1.0/flight/{flightId}")
-    FlightDTO getFlightDetails(@PathVariable("flightId") Long flightId);
+    ApiResponse<FlightDTO> getFlightDetails(@PathVariable("flightId") Long flightId);
 
     // Adjust endpoints if flight-service uses different path/HTTP verb
     @PostMapping("/api/v1.0/flight/{flightId}/reduceSeats")

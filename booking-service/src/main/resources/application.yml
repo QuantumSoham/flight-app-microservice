@@ -41,13 +41,26 @@ eureka:
     lease-renewal-interval-in-seconds: 10
     lease-expiration-duration-in-seconds: 30
 
-# ✅ ADD THIS (OpenFeign timeouts)
+# OpenFeign timeouts
 feign:
   client:
     config:
       default:
         connectTimeout: 5000
         readTimeout: 10000
+# Resilience4j - circuit breaker instance for flight-service
+resilience4j:
+  circuitbreaker:
+    instances:
+      flightService:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 20           # last N calls used for failure rate
+        minimumNumberOfCalls: 10       # need at least this many calls to evaluate
+        failureRateThreshold: 50       # % failure to open the circuit
+        waitDurationInOpenState: 30s   # how long to wait before trying half-open
+        permittedNumberOfCallsInHalfOpenState: 3
+        eventConsumerBufferSize: 10
 
 # Optional but recommended for Observability
 management:

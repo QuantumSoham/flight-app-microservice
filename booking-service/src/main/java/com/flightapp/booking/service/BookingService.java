@@ -13,6 +13,7 @@ import com.flightapp.booking.exception.ResourceNotFoundException;
 import com.flightapp.booking.repository.BookingRepository;
 import com.flightapp.booking.repository.PassengerRepository;
 import com.flightapp.booking.repository.UserAccountRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,13 +35,15 @@ public class BookingService {
     private final UserAccountRepository userAccountRepository;
     private final FlightServiceClient flightServiceClient;
 
+    private static final String FLIGHT_CB = "flightService";
+
     @Transactional
     public BookingResponse bookFlight(BookingRequest request) {
-        log.info("Processing flight booking for user: {} with {} seats", 
+        log.info("Processing flight booking for user: {} with {} seats",
                 request.getUserEmail(), request.getNumberOfSeats());
 
-        // Verify flight exists and has seats
-        FlightDTO flightDetails = flightServiceClient.getFlightDetails(request.getFlightId());
+        // Verify flight exists and has seats (protected by circuit breaker)
+        FlightDTO flightDetails = fetchFlightDetailsWithCircuitBreaker(request.getFlightId());
 
         if (flightDetails.getAvailableSeats() < request.getNumberOfSeats()) {
             throw new FlightServiceException("Insufficient available seats for booking");
@@ -81,13 +84,13 @@ public class BookingService {
         passengerRepository.saveAll(passengers);
         savedBooking.setPassengers(passengers);
 
-        // Reduce available seats in Flight Service
+        // Reduce available seats in Flight Service (best-effort)
         try {
             flightServiceClient.reduceFlightSeats(request.getFlightId(), request.getNumberOfSeats());
             log.info("Seats reduced in Flight Service");
         } catch (Exception e) {
             log.error("Error reducing seats in Flight Service, but booking is created", e);
-            // In production, might want to rollback the booking
+            // In production, consider compensating actions or rollback
         }
 
         return convertToBookingResponse(savedBooking);
@@ -130,7 +133,7 @@ public class BookingService {
         // Check if cancellation is allowed (24 hours before journey)
         if (!booking.canBeCancelled()) {
             throw new BookingCancellationException(
-                "Cancellation not allowed. Must cancel at least 24 hours before journey. Journey date: " + booking.getJourneyDateTime()
+                    "Cancellation not allowed. Must cancel at least 24 hours before journey. Journey date: " + booking.getJourneyDateTime()
             );
         }
 
@@ -150,6 +153,58 @@ public class BookingService {
         }
 
         return convertToBookingResponse(cancelledBooking);
+    }
+
+    /**
+     * Wrapper around Feign client call with circuit-breaker protection.
+     * Fallback method will be invoked if the call fails or circuit is open.
+     */
+//    @CircuitBreaker(name = FLIGHT_CB, fallbackMethod = "flightDetailsFallback")
+//    public FlightDTO fetchFlightDetailsWithCircuitBreaker(Long flightId) {
+//        return flightServiceClient.getFlightDetails(flightId);
+//    }
+   
+   
+
+    @CircuitBreaker(name = FLIGHT_CB, fallbackMethod = "flightDetailsFallback")
+    public FlightDTO fetchFlightDetailsWithCircuitBreaker(Long flightId) {
+        ApiResponse<FlightDTO> resp = flightServiceClient.getFlightDetails(flightId);
+
+        if (resp == null) {
+            log.error("Flight service returned null response for id {}", flightId);
+            throw new FlightServiceException("Flight service returned no data for flight id " + flightId);
+        }
+
+        if (!resp.isSuccess()) {
+            log.error("Flight service responded with error for id {}: {}", flightId, resp.getMessage());
+            throw new FlightServiceException("Flight service error: " + resp.getMessage());
+        }
+
+        FlightDTO flightDetails = resp.getData();
+        if (flightDetails == null) {
+            log.error("Flight service returned wrapper with null data for id {}: {}", flightId, resp);
+            throw new FlightServiceException("Flight details not available for flight id " + flightId);
+        }
+
+        // defensive check for availableSeats
+        if (flightDetails.getAvailableSeats() == null) {
+            log.error("FlightDTO.availableSeats is null for id {}: {}", flightId, flightDetails);
+            throw new FlightServiceException("Flight availability information is not available for flight id " + flightId);
+        }
+
+        return flightDetails;
+    }
+
+
+    /**
+     * Fallback invoked when flight service calls fail / circuit is open.
+     * Must match original params + Throwable as last parameter.
+     */
+    public FlightDTO flightDetailsFallback(Long flightId, Throwable t) {
+        log.error("Flight service fallback invoked for id {}: {}", flightId, t.toString());
+        // Throw an application-specific exception so controller returns appropriate error (503, etc.)
+        throw new FlightServiceException("Flight service is currently unavailable. Please try again later.");
+        // Alternatively you could return a default FlightDTO instead of throwing.
     }
 
     private Passenger createPassenger(PassengerRequest request, Booking booking, Long flightId) {
