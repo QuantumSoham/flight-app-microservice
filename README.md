@@ -1,5 +1,7 @@
 # Flight Booking Microservices System
 
+<img width="3536" height="1951" alt="image" src="https://github.com/user-attachments/assets/7bce6fdc-38e4-4279-94fb-944a64f5a981" />
+
 This project is a microservice-based implementation of a flight booking platform. It includes separate services for flight management and booking operations, along with supporting components like API Gateway, Config Server, Eureka, RabbitMQ, and OpenFeign for inter-service communication.
 
 The goal of the project is to learn and apply modern Spring Cloud patterns including service discovery, load balancing, centralized configuration, and event-driven architecture.
