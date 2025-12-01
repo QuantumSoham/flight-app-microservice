@@ -26,6 +26,7 @@ spring:
           batch_size: 20
     open-in-view: false
 
+
 eureka:
   client:
     service-url:
@@ -40,6 +41,20 @@ eureka:
     lease-renewal-interval-in-seconds: 10
     lease-expiration-duration-in-seconds: 30
 
+# ✅ ADD THIS (OpenFeign timeouts)
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 10000
+
+# Optional but recommended for Observability
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
 logging:
   level:
     root: INFO
