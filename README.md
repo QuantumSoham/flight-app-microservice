@@ -7,7 +7,8 @@ This project is a microservice-based implementation of a flight booking platform
 The goal of the project is to learn and apply modern Spring Cloud patterns including service discovery, load balancing, centralized configuration, and event-driven architecture.
 
 ---
-
+## ER DIAGRAM
+[View on Eraser![](https://app.eraser.io/workspace/bzh7FeGzkGMRfzognglP/preview?elements=blwO8lnppYnb8shYCmBBmA&type=embed)](https://app.eraser.io/workspace/bzh7FeGzkGMRfzognglP?elements=blwO8lnppYnb8shYCmBBmA
 ## Overview
 
 The system consists of the following services:
