@@ -8,12 +8,13 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = "com.flightapp.booking.client")
-@ComponentScan(basePackages = {"com.flightapp.booking"})
+@EnableFeignClients(basePackages = "com.flightapp.booking.client") // allow inter service communication with
+																	// flight-service
+@ComponentScan(basePackages = { "com.flightapp.booking" })
 
 public class BookingServiceApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BookingServiceApplication.class,   args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(BookingServiceApplication.class, args);
+	}
 }
