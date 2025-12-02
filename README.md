@@ -16,9 +16,11 @@ The system consists of the following services:
 1. **Flight Service** – Manages airlines, flight schedules, inventory, and search.
 2. **Booking Service** – Handles ticket bookings, cancellations, passenger info, PNR generation, and booking history.
 3. **API Gateway** – The single entry point to route all client requests.
-4. **Eureka Server** – Service registry used for discovering microservices dynamically.
-5. **Config Server** – Centralized configuration storage for all microservices.
-6. **RabbitMQ** – Used to publish an event whenever a booking is completed.
+5. **Eureka Server** – Service registry used for discovering microservices dynamically.
+6. **Config Server** – Centralized configuration storage for all microservices.
+7. **Load Balencing** - Utilized Open feign and spring load balencer to provide load balencing in Flight-booking service.
+8. **Circuit Breaker** - Implemented circuit breaker to fallback if service is down.
+9. **RabbitMQ** – Used to publish an event whenever a booking is completed( Ongoing )
 
 Each service has its own MySQL database and is designed to run independently.
 
