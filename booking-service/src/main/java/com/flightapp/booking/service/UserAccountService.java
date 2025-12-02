@@ -21,7 +21,7 @@ public class UserAccountService {
 
     private final UserAccountRepository userAccountRepository;
 
-    @Transactional
+    @Transactional //this means either execute or rollback
     public UserResponse registerUser(UserRegisterRequest request) {
         log.info("Registering new user with email: {}", request.getEmail());
 
