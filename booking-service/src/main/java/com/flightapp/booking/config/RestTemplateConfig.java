@@ -9,7 +9,7 @@ import java.time.Duration;
 
 @Configuration
 public class RestTemplateConfig {
-
+	//configuring rest template , how it should behave, connection timeout and read timeout
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
