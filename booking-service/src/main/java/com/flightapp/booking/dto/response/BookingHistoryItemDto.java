@@ -15,12 +15,12 @@ import java.time.LocalDateTime;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookingHistoryItemDto {
-    private Long id;
-    private String pnr;
-    private Long flightId;
-    private LocalDateTime bookingDateTime;
-    private LocalDateTime journeyDateTime;
-    private String status;
-    private Integer numberOfSeats;
-    private BigDecimal totalPrice;
+	private Long id;
+	private String pnr;
+	private Long flightId;
+	private LocalDateTime bookingDateTime;
+	private LocalDateTime journeyDateTime;
+	private String status;
+	private Integer numberOfSeats;
+	private BigDecimal totalPrice;
 }
