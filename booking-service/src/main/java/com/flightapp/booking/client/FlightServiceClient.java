@@ -9,17 +9,18 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(name = "flight-service")
 public interface FlightServiceClient {
 
-    @GetMapping("/api/v1.0/flight/{flightId}")
-    ApiResponse<FlightDTO> getFlightDetails(@PathVariable("flightId") Long flightId);
+	@GetMapping("/api/v1.0/flight/{flightId}")
+	ApiResponse<FlightDTO> getFlightDetails(@PathVariable("flightId") Long flightId);
 
-    // Adjust endpoints if flight-service uses different path/HTTP verb
-    @PostMapping("/api/v1.0/flight/{flightId}/reduceSeats")
-    void reduceFlightSeats(@PathVariable("flightId") Long flightId, @RequestParam("count") Integer count);
+	// Mapping Flight service api to booking service through http calls
+	@PostMapping("/api/v1.0/flight/{flightId}/reduceSeats")
+	void reduceFlightSeats(@PathVariable("flightId") Long flightId, @RequestParam("count") Integer count);
 
-    @PostMapping("/api/v1.0/flight/{flightId}/increaseSeats")
-    void increaseFlightSeats(@PathVariable("flightId") Long flightId, @RequestParam("count") Integer count);
+	@PostMapping("/api/v1.0/flight/{flightId}/increaseSeats")
+	void increaseFlightSeats(@PathVariable("flightId") Long flightId, @RequestParam("count") Integer count);
 }
 
+//Implementation I experimented with Rest Template , very verbose 
 //package com.flightapp.booking.client;
 //
 //import com.flightapp.booking.dto.response.FlightDTO;
