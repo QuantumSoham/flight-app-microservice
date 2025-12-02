@@ -16,15 +16,15 @@ import java.util.List;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookingResponse {
-    private Long id;
-    private String pnr;
-    private Long flightId;
-    private String userName;
-    private String userEmail;
-    private Integer numberOfSeats;
-    private LocalDateTime bookingDateTime;
-    private LocalDateTime journeyDateTime;
-    private String status;
-    private BigDecimal totalPrice;
-    private List<PassengerResponse> passengers;
+	private Long id;
+	private String pnr;
+	private Long flightId;
+	private String userName;
+	private String userEmail;
+	private Integer numberOfSeats;
+	private LocalDateTime bookingDateTime;
+	private LocalDateTime journeyDateTime;
+	private String status;
+	private BigDecimal totalPrice;
+	private List<PassengerResponse> passengers;
 }

@@ -82,6 +82,14 @@
   <artifactId>resilience4j-spring-boot3</artifactId>
 </dependency>
 
+<!-- put inside <dependencies> -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+</dependency>
+
+
 <!-- AOP required for annotation-driven behavior -->
 <dependency>
   <groupId>org.springframework.boot</groupId>
