@@ -21,12 +21,14 @@ public class UserController {
 
     private final UserAccountService userAccountService;
     
+    //a test end point for me to debug 
     @GetMapping("/test123")
     public void testendpoint()
     {
     	System.out.println("Test Hit");
     }
 
+    //register a user for booking
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserResponse>> registerUser(@Valid @RequestBody UserRegisterRequest request) {
         System.out.println("Controller hit");
@@ -45,6 +47,7 @@ public class UserController {
         }
     }
 
+    //get user by email id 
     @GetMapping("/{email}")
     public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable String email) {
         try {

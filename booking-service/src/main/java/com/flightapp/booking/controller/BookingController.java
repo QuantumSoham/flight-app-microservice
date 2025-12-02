@@ -23,7 +23,7 @@ public class BookingController {
 
 	private final BookingService bookingService;
 
-	//check booking by flight id
+	//booking by flight id
 	@PostMapping("/booking/{flightId}")
 	public ResponseEntity<ApiResponse<BookingResponse>> bookFlight(@PathVariable Long flightId,
 			@Valid @RequestBody BookingRequest request) {
