@@ -15,19 +15,19 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PassengerRequest {
 
-    @NotBlank(message = "Passenger name is required")
-    private String name;
+	@NotBlank(message = "Passenger name is required")
+	private String name;
 
-    @NotNull(message = "Gender is required")
-    private Passenger.Gender gender;
+	@NotNull(message = "Gender is required")
+	private Passenger.Gender gender;
 
-    @NotNull(message = "Age is required")
-    @Positive(message = "Age must be positive")
-    private Integer age;
+	@NotNull(message = "Age is required")
+	@Positive(message = "Age must be positive")
+	private Integer age;
 
-    @NotBlank(message = "Seat number is required")
-    private String seatNumber;
+	@NotBlank(message = "Seat number is required")
+	private String seatNumber;
 
-    @NotNull(message = "Meal preference is required")
-    private Passenger.MealType mealType;
+	@NotNull(message = "Meal preference is required")
+	private Passenger.MealType mealType;
 }
